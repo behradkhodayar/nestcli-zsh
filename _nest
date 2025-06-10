@@ -1,0 +1,118 @@
+#compdef nest
+#autoload
+
+# Copyright (C) 2012 - 2014:
+#    Behrad Khodayar <behrad.khodayar@gmail.com>
+# This file is licensed under the MIT.
+# The current plugin provides zsh completion for the NestJS CLI.
+# NestJS CLI: https://docs.nestjs.com/cli/overview
+
+
+# zsh completion for NestJS CLI
+
+_nest() {
+  local -a commands
+
+  commands=(
+    'new:Create a new Nest project'
+    'generate:Generate a new Nest element'
+    'build:Build the project'
+    'start:Start the application'
+    'info:Display project information'
+    'add:Add a new package to the project'
+    'update:Update the project dependencies'
+  )
+
+
+  # Handle completions for subcommands
+  case $words[2] in
+    add)
+      _nest_add
+      return
+      ;;
+    generate)
+      _nest_generate
+      return
+      ;;
+    start)
+      _nest_start
+      return
+      ;;
+    build)
+      _nest_build
+      return
+      ;;
+  esac
+  
+  _describe 'nest commands' commands
+
+}
+
+
+_nest_add() {
+  local -a options
+  options=(
+    '--dry-run:Report actions that would be performed without writing out results.'
+    '--skip-install:Skip package installation. (default: false)'
+    '--project:Project in which to generate files.'
+    '--help:Output usage information'
+  )
+  _describe 'nest add options' options
+}
+
+
+_nest_generate() {
+  local -a elements
+
+  elements=(
+    'application:Generate a new application'
+    'class:Generate a new class'
+    'controller:Generate a new controller'
+    'decorator:Generate a new decorator'
+    'filter:Generate a new filter'
+    'gateway:Generate a new gateway'
+    'guard:Generate a new guard'
+    'interceptor:Generate a new interceptor'
+    'interface:Generate a new interface'
+    'middleware:Generate a new middleware'
+    'module:Generate a new module'
+    'pipe:Generate a new pipe'
+    'provider:Generate a new provider'
+    'resolver:Generate a new resolver'
+    'resource:Generate a new resource'
+    'service:Generate a new service'
+    'sub-app:Generate a new sub-application'
+    'library:Generate a new library'
+  )
+
+  _describe 'nest generate elements' elements
+}
+
+_nest_start() {
+  local -a options
+  options=(
+    '--watch:Run in watch mode (live-reload)'
+    '--debug:Run in debug mode'
+    '--path:Specify path to tsconfig.json file'
+    '--webpack:Use webpack for compilation'
+    '--webpackPath:Path to webpack configuration'
+    '--tsc:Use tsc for compilation'
+    '--help:Display help for command'
+  )
+  _describe 'start options' options
+}
+
+_nest_build() {
+  local -a options
+  options=(
+    '--path:Specify path to tsconfig.json file'
+    '--webpack:Use webpack for compilation'
+    '--webpackPath:Path to webpack configuration'
+    '--tsc:Use tsc for compilation'
+    '--help:Display help for command'
+  )
+  _describe 'build options' options
+}
+
+
+_nest
