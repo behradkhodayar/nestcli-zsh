@@ -4,48 +4,51 @@
 # Copyright (C) 2012 - 2014:
 #    Behrad Khodayar <behrad.khodayar@gmail.com>
 # This file is licensed under the MIT.
-# The current plugin provides zsh completion for the NestJS CLI.
+# The current plugin provides ZSh completion for the NestJS CLI.
 # NestJS CLI: https://docs.nestjs.com/cli/overview
 
 
-# zsh completion for NestJS CLI
-
 _nest() {
-  local -a commands
 
-  commands=(
-    'new:Create a new Nest project'
-    'generate:Generate a new Nest element'
-    'build:Build the project'
-    'start:Start the application'
-    'info:Display project information'
-    'add:Add a new package to the project'
-    'update:Update the project dependencies'
-  )
+local -a commands
 
+commands=(
+  'new:Generate Nest application.'
+  'generate:Generate a Nest element.'
+  'build:Build Nest application.'
+  'start:Run Nest application'
+  'info:Display Nest project details.'
+  'add:Adds support for an external library to your project.'
+)
 
-  # Handle completions for subcommands
-  case $words[2] in
-    add)
-      _nest_add
-      return
-      ;;
-    generate)
-      _nest_generate
-      return
-      ;;
-    start)
-      _nest_start
-      return
-      ;;
-    build)
-      _nest_build
-      return
-      ;;
-  esac
-  
-  _describe 'nest commands' commands
+case $words[2] in
+  add)
+    _nest_add
+    return
+    ;;
+  build)
+    _nest_build
+    return
+    ;;
+  generate)
+    _nest_generate
+    return
+    ;;
+  info)
+    _nest_info
+    return
+    ;;
+  new)
+    _nest_new
+    return
+    ;;
+  start)
+    _nest_start
+    return
+    ;;
+esac
 
+_describe 'nest commands' commands
 }
 
 
@@ -54,65 +57,110 @@ _nest_add() {
   options=(
     '--dry-run:Report actions that would be performed without writing out results.'
     '--skip-install:Skip package installation. (default: false)'
-    '--project:Project in which to generate files.'
-    '--help:Output usage information'
+    '--project:project [project] - Project in which to generate files.'
+    '--help:Output usage information.'
   )
   _describe 'nest add options' options
-}
 
-
-_nest_generate() {
-  local -a elements
-
-  elements=(
-    'application:Generate a new application'
-    'class:Generate a new class'
-    'controller:Generate a new controller'
-    'decorator:Generate a new decorator'
-    'filter:Generate a new filter'
-    'gateway:Generate a new gateway'
-    'guard:Generate a new guard'
-    'interceptor:Generate a new interceptor'
-    'interface:Generate a new interface'
-    'middleware:Generate a new middleware'
-    'module:Generate a new module'
-    'pipe:Generate a new pipe'
-    'provider:Generate a new provider'
-    'resolver:Generate a new resolver'
-    'resource:Generate a new resource'
-    'service:Generate a new service'
-    'sub-app:Generate a new sub-application'
-    'library:Generate a new library'
-  )
-
-  _describe 'nest generate elements' elements
-}
-
-_nest_start() {
-  local -a options
-  options=(
-    '--watch:Run in watch mode (live-reload)'
-    '--debug:Run in debug mode'
-    '--path:Specify path to tsconfig.json file'
-    '--webpack:Use webpack for compilation'
-    '--webpackPath:Path to webpack configuration'
-    '--tsc:Use tsc for compilation'
-    '--help:Display help for command'
-  )
-  _describe 'start options' options
 }
 
 _nest_build() {
   local -a options
   options=(
-    '--path:Specify path to tsconfig.json file'
-    '--webpack:Use webpack for compilation'
-    '--webpackPath:Path to webpack configuration'
-    '--tsc:Use tsc for compilation'
-    '--help:Display help for command'
+  '--config:config [path] - Path to nest-cli configuration file.'
+  '--path:path [path] - Path to tsconfig file.'
+  '--watch:Run in watch mode (live-reload).'
+  '--builder:builder [name] - Builder to be used (tsc, webpack, swc).'
+  '--watchAssets:Watch non-ts (e.g., .graphql) files mode.'
+  '--webpack:Use webpack for compilation (deprecated option, use --builder instead).'
+  '--type-check:Enable type checking (when SWC is used).'
+  '--webpackPath:webpackPath [path] - Path to webpack configuration.'
+  '--tsc:Use typescript compiler for compilation.'
+  '--preserveWatchOutput:Use "preserveWatchOutput" option when using tsc watch mode.'
+  '--all:Build all projects in a monorepo.'
+  '--help:Output usage information.'
   )
   _describe 'build options' options
 }
 
+_nest_generate() {
+  local -a elements
+
+  elements=(
+    'application:Generate a new application workspace'
+    'class:Generate a new class'
+    'configuration:Generate a CLI configuration file'
+    'controller:Generate a controller declaration'
+    'decorator:Generate a custom decorator'
+    'filter:Generate a filter declaration'
+    'gateway:Generate a gateway declaration'
+    'guard:Generate a guard declaration'
+    'interceptor:Generate an interceptor declaration'
+    'interface:Generate an interface'
+    'library:Generate a new library within a monorepo'
+    'middleware:Generate a middleware declaration'
+    'module:Generate a module declaration'
+    'pipe:Generate a pipe declaration'
+    'provider:Generate a provider declaration'
+    'resolver:Generate a GraphQL resolver declaration'
+    'resource:Generate a new CRUD resource'
+    'service:Generate a service declaration'
+    'sub-app:Generate a new application within a monorepo'
+  )
+
+  _describe 'nest generate elements' elements
+}
+
+_nest_info(){
+  local -a options
+
+  options=(
+    '--help:Output usage information'
+  )
+  _describe 'nest info options' options
+}
+
+
+_nest_new(){
+  local -a options
+
+  options=(
+    '--directory:directory [directory] - Specify the destination directory'
+    '--dry-run:Report actions that would be performed without writing out results. (default: false)'
+    '--skip-git:Skip git repository initialization. (default: false)'
+    '--skip-install:Skip package installation. (default: false)'
+    '--package-manager:package-manager [packageManager] - Specify package manager.'
+    '--language:language [language] - Programming language to be used (TypeScript or JavaScript) (default: "TypeScript")'
+    '--collection:collection [collectionName] - Schematics collection to use (default: "@nestjs/schematics")'
+    '--strict:Enables strict mode in TypeScript. (default: false)'
+    '--help:Output usage information'
+  )
+  _describe 'nest new options' options
+}
+
+_nest_start() {
+  local -a options
+  options=(
+  '--config:config [path] - Path to nest-cli configuration file.'
+  '--path:path [path] - Path to tsconfig file.'
+  '--watch:Run in watch mode (live-reload).'
+  '--builder:builder [name] - Builder to be used (tsc, webpack, swc).'
+  '--watchAssets:Watch non-ts (e.g., .graphql) files mode.'
+  '--debug:debug [hostport] - Run in debug mode (with --inspect flag).'
+  '--webpack:Use webpack for compilation (deprecated option, use --builder instead).'
+  '--webpackPath:webpackPath [path] - Path to webpack configuration.'
+  '--type-check:Enable type checking (when SWC is used).'
+  '--tsc:Use typescript compiler for compilation.'
+  '--sourceRoot:sourceRoot [sourceRoot] - Points at the root of the source code for the single project in standard mode structures, or the default project in monorepo mode structures.'
+  '--entryFile:entryFile [entryFile] - Path to the entry file where this command will work with. Defaults to the one defined at your Nest CLI config file.'
+  '--exec:exec [binary] - Binary to run (default: "node").'
+  '--preserveWatchOutput:Use "preserveWatchOutput" option when using tsc watch mode.'
+  '--shell:Spawn child processes within a shell (see node child_process.spawn() method docs). Default: true. (default: true)'
+  '--no-shell:Do not spawn child processes within a shell.'
+  '--env-file:env-file [path] - Path to an env file (.env) to be loaded into the environment. (default: [])'
+  '--help:Output usage information.'
+  )
+  _describe 'start options' options
+}
 
 _nest

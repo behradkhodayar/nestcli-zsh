@@ -34,19 +34,20 @@ Restart your shell or source your `.zshrc` file:
 
 ## Usage
 
-Once installed, the plugin will automatically provide completions for nest commands. Simply type nest and press Tab to see the available commands.
+Once installed, the plugin will automatically provide completions for nest commands. Simply type nest and press Tab to see the available commands, options & sub-commands.
 
 `nest <Tab>`
 
 You'll see a list of available commands, such as new, add, generate, build, etc.
 
-The plugin also provides completions for the `add`, `generate`, `start` & `build` command's options & subcommands:
+The plugin also provides completions for the `add`, `build`, `generate`, `info`, `new` & `start` command options & subcommands:
 
 ```shell
 nest add <Tab>
 nest generate <Tab>
 nest start <Tab>
 nest build <Tab>
+...
 ```
 
 So for example, hitting <kbd>Tab</kbd> on `nest generate` will show a list of available elements to generate, such as module, controller, service, etc.
